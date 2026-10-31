@@ -1,10 +1,10 @@
 # FlashScan
 
-Pick a file, view its hash and Windows signature, and optionally scan it with Microsoft Defender. Save the results as a JSON report.
+A Windows dashboard for checking one file. View its SHA-256 hash and signature, optionally ask Microsoft Defender to scan it, and save a JSON report.
 
 **FlashScan is not an antivirus engine, a kernel driver, or a complete anti-cheat.** It does not identify unknown malware itself. An unsigned file isn't automatically malicious, and a valid signature or successful scan cannot prove a file is safe.
 
-## Getting started
+## Setup
 
 Windows 10/11 with Windows PowerShell 5.1 and the built-in desktop .NET components is required. No third-party packages are needed.
 
