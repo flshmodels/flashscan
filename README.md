@@ -1,10 +1,10 @@
 # FlashScan
 
-A small Windows file-inspection dashboard. Pick a file, check its SHA-256 and Authenticode signature, and optionally request a Microsoft Defender scan. Export the result as JSON when you need a record.
+Pick a file, view its hash and Windows signature, and optionally scan it with Microsoft Defender. Save the results as a JSON report.
 
 **FlashScan is not an antivirus engine, a kernel driver, or a complete anti-cheat.** It does not identify unknown malware itself. An unsigned file isn't automatically malicious, and a valid signature or successful scan cannot prove a file is safe.
 
-## Run
+## Getting started
 
 Windows 10/11 with Windows PowerShell 5.1 and the built-in desktop .NET components is required. No third-party packages are needed.
 
@@ -20,7 +20,7 @@ If Windows blocks a downloaded script, inspect the source and follow your organi
 
 Inspection reads the file and never executes it. FlashScan does not install a service or driver, delete or quarantine files, change Defender settings, or upload the selected file itself. The optional Defender custom scan uses `-DisableRemediation`, which requests detection without applying remediation. Windows real-time protection and cloud protection continue to operate under their existing settings and can independently act on files. Defender activity may create its own system logs.
 
-The UI remains responsive while a background job runs. It does not offer cancellation of a Defender scan; wait for it to finish before closing. There is no fabricated percentage counter.
+The UI remains responsive while a background job runs. It does not offer cancellation of a Defender scan; wait for it to finish before closing.
 
 ## Reading results
 
@@ -34,18 +34,18 @@ Only the selected file is requested. This isn't a whole-PC, memory, bootkit, or 
 
 See [Microsoft's MpCmdRun documentation](https://learn.microsoft.com/en-us/defender-endpoint/command-line-arguments-microsoft-defender-antivirus) for scan options and exit-code meanings.
 
-## Code and inputs/outputs
+## Inputs and outputs
 
 | File / function | Input | Output |
 | --- | --- | --- |
 | `src/FlashScan.ps1` | File selected in a native dialog; optional Defender checkbox | Dashboard result; optional JSON report chosen through a save dialog |
 | `Get-FlashFileInfo` | One literal file path | Path, size, SHA-256, signature, publisher, inspection time |
 | `Invoke-FlashInspection` | Path and `UseDefender` boolean | File information, requested-scan flag, optional exit code, summary, raw Defender output |
-| `Get-FlashDefenderSummary` | Integer exit code | Conservative explanation of that exit code |
+| `Get-FlashDefenderSummary` | Integer exit code | Explanation of that exit code |
 
 Reports include local paths and may include publisher details and Defender output. Choose where to save them and review them before sharing. Reports are ignored by Git by default.
 
-## Development
+## Tests
 
 Run `powershell -NoProfile -File tests/Run.Tests.ps1`. Tests use a harmless text fixture; they don't download malware, invoke Defender, or change security settings. GitHub Actions runs the same checks on Windows. These tests don't establish malware-detection quality or compatibility with every Windows/Defender configuration.
 
